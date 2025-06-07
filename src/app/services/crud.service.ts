@@ -1,9 +1,17 @@
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CRUDService {
 
-  constructor() { }
+  constructor(private httpCLient : HttpClient) { }
+  
+  loadProducts() {
+    const url = environment.API_EndPoint + 'view.php';
+    return this.httpCLient.get(url).pipe(map(data => data));
+  }
 }
