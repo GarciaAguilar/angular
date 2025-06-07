@@ -1,22 +1,70 @@
 <div class="row">
     <div class="col-md-6 offset-md-3 mt-3">
-        <form>
+        <form [formGroup]="productForm">
             <div class="form-group row">
                 <label for="product-name" class="col-sm-2 col-form-label">Nombre Producto:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="product-name">
+                    <input formControlName="name" type="text" class="form-control" id="product-name" [ngClass]="{
+                        'is-invalid': productForm.get('name')?.invalid && productForm.get('name')?.touched,
+                        'is-valid': productForm.get('name')?.valid && productForm.get('name')?.touched
+                    }">
+                    <div class="alert alert-danger" role="alert"
+                        *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched">
+                        <span *ngIf="productForm.get('name')?.hasError('required')">
+                            El nombre es requerido
+                        </span>
+                        <span *ngIf="productForm.get('name')?.hasError('minlength')">
+                            El nombre debe tener al menos 3 caracteres
+                        </span>
+                        <span *ngIf="productForm.get('name')?.hasError('maxlength')">
+                            El nombre no puede tener más de 50 caracteres
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="form-group row">
-                <label for="product-desc" class="col-sm-2 col-form-label">Email</label>
+                <label for="product-desc" class="col-sm-2 col-form-label">Descripción Producto </label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="product-name">
+                    <textarea formControlName="description" rows="5" class="form-control" name="product-desc"
+                        id="product-desc" [ngClass]="{
+                        'is-invalid': productForm.get('description')?.invalid && productForm.get('description')?.touched,
+                        'is-valid': productForm.get('description')?.valid && productForm.get('description')?.touched
+                    }">
+                    </textarea>
+                    <div class="alert alert-danger" role="alert"
+                        *ngIf="productForm.get('description')?.invalid && productForm.get('description')?.touched">
+                        <span *ngIf="productForm.get('description')?.hasError('required')">
+                            La descripción es requerida
+                        </span>
+                        <span *ngIf="productForm.get('description')?.hasError('minlength')">
+                            La descripción debe tener al menos 3 caracteres
+                        </span>
+                        <span *ngIf="productForm.get('description')?.hasError('maxlength')">
+                            La descripción no puede tener más de 250 caracteres
+                        </span>
+                    </div>
                 </div>
             </div>
-             <div class="form-group row">
-                <label for="product-price" class="col-sm-2 col-form-label">Email</label>
+            <div class="form-group row">
+                <label for="product-price" class="col-sm-2 col-form-label">Precio producto</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="product-price">
+                    <input formControlName="price" type="number" 
+                        class="form-control" id="product-price" [ngClass]="{
+                        'is-invalid': productForm.get('price')?.invalid && productForm.get('price')?.touched,
+                        'is-valid': productForm.get('price')?.valid && productForm.get('price')?.touched
+                    }">
+                     <div class="alert alert-danger" role="alert"
+                        *ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched">
+                        <span *ngIf="productForm.get('price')?.hasError('required')">
+                            El precio es requerido
+                        </span>
+                        <span *ngIf="productForm.get('price')?.hasError('minlength')">
+                            El precio debe ser mayor a 1
+                        </span>
+                        <span *ngIf="productForm.get('price')?.hasError('maxlength')">
+                            El precio no puede ser mayor a 5 digitos
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="form-group row">

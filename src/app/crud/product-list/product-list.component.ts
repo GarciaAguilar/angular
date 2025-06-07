@@ -79,7 +79,7 @@ export class ProductListComponent implements OnInit {
   }
 
   deleteProduct(params: any) {
-    console.log('Estamos en eliminar producto');
+    console.log('Estamos en eliminar producto: ' + params.data.p_id);
   }
 
   
