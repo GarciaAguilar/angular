@@ -14,4 +14,9 @@ export class CRUDService {
     const url = environment.API_EndPoint + 'view.php';
     return this.httpCLient.get(url).pipe(map(data => data));
   }
+
+  /*editProduct(product: any) {
+    const url = environment.API_EndPoint + 'update.php';
+    return this.httpCLient.post(url, product).pipe(map(data => data));
+  }*/
 }

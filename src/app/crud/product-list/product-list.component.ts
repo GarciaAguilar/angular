@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CRUDService } from 'src/app/services/crud.service';
 
 @Component({
@@ -9,11 +10,13 @@ import { CRUDService } from 'src/app/services/crud.service';
 export class ProductListComponent implements OnInit {
 
   columnDefs = [
-    {field: 'p_name', headerName: 'Nombre Producto', sortable: true, headerClass: 'header-cell'},
-    {field: 'p_description', headerName: 'Descripción', sortable: true, headerClass: 'header-cell'},
-    {field: 'p_price', headerName: 'Precio', sortable: true, headerClass: 'header-cell'},
-    {field: '', headerName: 'Acciones', sortable: true, headerClass: 'header-cell', 
-      width: 300, cellRenderer: this.actionRender},
+    { field: 'p_name', headerName: 'Nombre Producto', sortable: true, headerClass: 'header-cell' },
+    { field: 'p_description', headerName: 'Descripción', sortable: true, headerClass: 'header-cell' },
+    { field: 'p_price', headerName: 'Precio', sortable: true, headerClass: 'header-cell' },
+    {
+      field: '', headerName: 'Acciones', sortable: true, headerClass: 'header-cell',
+      width: 300, cellRenderer: this.actionRender.bind(this)
+    },
   ];
 
   rowData: any = [];
@@ -24,7 +27,9 @@ export class ProductListComponent implements OnInit {
   productList: any = [];
   productListSuscribe: any;
 
-  constructor(private crudService : CRUDService) { }
+  constructor(private crudService: CRUDService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.getProductList();
@@ -38,8 +43,44 @@ export class ProductListComponent implements OnInit {
   }
 
   actionRender(params: any) {
-    return `<button class="btn btn-primary" (click)="verProduct(${params.data.p_id})">Ver</button>
-            <button class="btn btn-warning" (click)="editProduct(${params.data.p_id})">Editar</button>
-            <button class="btn btn-danger" (click)="deleteProduct(${params.data.p_id})">Eliminar</button>`;
+    let div = document.createElement('div');
+    let html = `<button type="button" class="btn btn-primary">Ver</button>
+            <button class="btn btn-warning">Editar</button>
+            <button class="btn btn-danger">Eliminar</button>`;
+    div.innerHTML = html;
+
+    //Seleecionar boton ver
+    let viewButton = div.querySelector('.btn-primary');
+    viewButton?.addEventListener('click', () => {
+      this.viewProductDetails(params);
+    })
+
+    //Seleccionar boton editar
+     let editButton = div.querySelector('.btn-warning');
+    editButton?.addEventListener('click', () => {
+      this.editProductDetails(params);
+    })
+
+    //Seleccionar boton eliminar
+     let deleteButton = div.querySelector('.btn-danger');
+    deleteButton?.addEventListener('click', () => {
+      this.deleteProduct(params);
+    })
+
+    return div;
   }
+
+  viewProductDetails(params: any) {
+    this.router.navigate(['/crud/view-product-details/' + params.data.p_id]);
+  }
+
+  editProductDetails(params: any) {
+    this.router.navigate(['/crud/update-product/' + params.data.p_id]);
+  }
+
+  deleteProduct(params: any) {
+    console.log('Estamos en eliminar producto');
+  }
+
+  
 }
