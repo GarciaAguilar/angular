@@ -3,10 +3,9 @@
         <div class="card" style="width: 25rem;">
             <img src="assets/images.jfif" class="card-img-top" alt="...">
             <div class="card-body">
-                <h5 class="card-title">Titulo Producto</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                    card's content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <h5 class="card-title">{{detalleProducto?.p_name}}</h5>
+                <p class="card-text">{{detalleProducto?.p_description}}</p>
+                <a href="#" class="btn btn-primary">${{detalleProducto?.p_price}}</a>
             </div>
         </div>
     </div>
