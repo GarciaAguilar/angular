@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CellRendererComponent } from 'ag-grid-community/dist/lib/components/framework/componentTypes';
 import { CRUDService } from 'src/app/services/crud.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-product-list',
@@ -57,13 +58,13 @@ export class ProductListComponent implements OnInit {
     })
 
     //Seleccionar boton editar
-     let editButton = div.querySelector('.btn-warning');
+    let editButton = div.querySelector('.btn-warning');
     editButton?.addEventListener('click', () => {
       this.editProductDetails(params);
     })
 
     //Seleccionar boton eliminar
-     let deleteButton = div.querySelector('.btn-danger');
+    let deleteButton = div.querySelector('.btn-danger');
     deleteButton?.addEventListener('click', () => {
       this.deleteProduct(params);
     })
@@ -80,12 +81,34 @@ export class ProductListComponent implements OnInit {
   }
 
   deleteProduct(params: any) {
-    console.log('Estamos en eliminar producto: ' + params.data.p_id);
+    const that = this;
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "No podrás revertir esto!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminarlo!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        that.crudService.deleteProduct(params.data.p_id).subscribe(res => {
+          if (res.result === 'success') {
+            this.getProductList();
+            Swal.fire({
+              title: "Eliminado!",
+              text: "El producto ha sido eliminado.",
+              icon: "success"
+            });
+          }
+        });
+      }
+    });
   }
 
   priceCellRender(params: any) {
     return '$ ' + params.data.p_price;
   }
 
-  
+
 }
