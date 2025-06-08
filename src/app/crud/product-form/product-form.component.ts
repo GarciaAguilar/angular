@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CRUDService } from 'src/app/services/crud.service';
 
 @Component({
@@ -12,7 +13,8 @@ export class ProductFormComponent implements OnInit {
   productForm: FormGroup;
 
   constructor(private crudService : CRUDService,
-              private formBuilder: FormBuilder
+              private formBuilder: FormBuilder,
+              private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -25,5 +27,24 @@ export class ProductFormComponent implements OnInit {
       'description': ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(250)])],
       'price': ['', Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(5)])]
     });
+  }
+
+  createProduct(values: any, isUpdate: boolean = false) {
+    console.log(values);
+    let formData = new FormData();
+    formData.append('name', values.name);
+    formData.append('description', values.description);
+    formData.append('price', values.price);
+
+    if (isUpdate) {
+      //PARA ACTUALIZAR UN PRODUCTO
+    }else{
+      this.crudService.createProduct(formData).subscribe(res=>{
+        if(res.result === 'success') {
+          this.router.navigate(['/crud/product-list']);
+        }
+      });
+
+    }
   }
 }
