@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CellRendererComponent } from 'ag-grid-community/dist/lib/components/framework/componentTypes';
 import { CRUDService } from 'src/app/services/crud.service';
 
 @Component({
@@ -12,7 +13,7 @@ export class ProductListComponent implements OnInit {
   columnDefs = [
     { field: 'p_name', headerName: 'Nombre Producto', sortable: true, headerClass: 'header-cell' },
     { field: 'p_description', headerName: 'Descripción', sortable: true, headerClass: 'header-cell' },
-    { field: 'p_price', headerName: 'Precio', sortable: true, headerClass: 'header-cell' },
+    { field: 'p_price', headerName: 'Precio', sortable: true, headerClass: 'header-cell', cellRenderer: this.priceCellRender.bind(this) },
     {
       field: '', headerName: 'Acciones', sortable: true, headerClass: 'header-cell',
       width: 300, cellRenderer: this.actionRender.bind(this)
@@ -80,6 +81,10 @@ export class ProductListComponent implements OnInit {
 
   deleteProduct(params: any) {
     console.log('Estamos en eliminar producto: ' + params.data.p_id);
+  }
+
+  priceCellRender(params: any) {
+    return '$ ' + params.data.p_price;
   }
 
   
