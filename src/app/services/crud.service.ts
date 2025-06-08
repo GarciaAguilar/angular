@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable } from 'rxjs';
 import { HttpResponse } from '../crud/models/http-response';
 import { Product } from '../crud/models/product';
 
@@ -13,14 +13,31 @@ export class CRUDService {
   constructor(private httpClient : HttpClient) { }
   
   loadProducts() {
-    const url = environment.API_EndPoint + 'view.php';
+    const url = environment.API_EndPoint + 'listar.php';
     return this.httpClient.get(url).pipe(map(data => data));
   }
+/*loadProducts(): Observable<Product[]> {  // Cambiado a Observable<Product[]>
+    const url = environment.API_EndPoint + 'listar.php';
+    
+    return this.httpClient.get<HttpResponse>(url).pipe(
+      map(response => {
+        if (response.result === 'success') {
+          // Asegúrate de que response.data existe y es un array
+          return response.data || [];
+        }
+        throw new Error(response.message || 'Error desconocido');
+      }),
+      catchError(error => {
+        console.error('Error al cargar productos:', error);
+        throw error;
+      })
+    );
+  }*/
 
   //Metodo para crear un producto
  
   createProduct(formData: FormData): Observable<HttpResponse> {
-    const url = environment.API_EndPoint + 'create.php';
+    const url = environment.API_EndPoint + 'crear.php';
     return this.httpClient.post<HttpResponse>(url, formData);
   }
 
@@ -31,7 +48,7 @@ export class CRUDService {
   }
   
   editProduct(data: any): Observable<HttpResponse> {
-    const url = environment.API_EndPoint + 'update.php';
+    const url = environment.API_EndPoint + 'actualizar.php';
     return this.httpClient.post<HttpResponse>(url, data).pipe(map(data => data));
   }
 

@@ -10,11 +10,11 @@ import { Product } from '../models/product';
   styleUrls: ['./product-details.component.scss']
 })
 export class ProductDetailsComponent implements OnInit {
-  //@ts-ignore
+  // @ts-ignore
   detalleProducto: Product;
 
   constructor(private crudService: CRUDService,
-              private activatedRoute: ActivatedRoute
+              private activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
